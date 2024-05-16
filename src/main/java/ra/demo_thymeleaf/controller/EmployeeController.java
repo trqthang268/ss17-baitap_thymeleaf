@@ -33,11 +33,10 @@ public class EmployeeController {
 
     @PostMapping(value = "/insertEmployee")
     public String insertEmployee(@Validated @ModelAttribute("employee") Employee e, BindingResult result, Model model) {
-        boolean bl = employeeDao.addEmployee(e);
-        if (bl) {
+        if (!result.hasErrors()) {
+            employeeDao.addEmployee(e);
             return "redirect:/home";
         }else {
-            model.addAttribute("err","Insert Employee Failed");
             model.addAttribute("employee",e);
             return "insertEmployee";
         }
@@ -51,9 +50,14 @@ public class EmployeeController {
     }
 
     @PostMapping("/updateEmployee")
-    public String updateEmployee(@ModelAttribute("employee") Employee e, Model model) {
+    public String updateEmployee(@Validated @ModelAttribute("employee") Employee e, Model model,BindingResult result) {
+        if (result.hasErrors()){
+            model.addAttribute("employee",e);
+            return "updateEmployee";
+        }else {
         employeeDao.updateEmployee(e);
         return "redirect:/home";
+        }
     }
     @GetMapping("/delete/{id}")
     public String deleteEmployee(@PathVariable("id") Integer id) {

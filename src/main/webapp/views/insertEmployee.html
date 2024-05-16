@@ -13,7 +13,6 @@
 <body>
 <div class="container">
     <h1>INSERT EMPLOYEE</h1>
-    <h3 class="text-danger">${err}</h3>
     <form th:action="@{/insertEmployee}" th:object="${employee}" method="post">
         <div class="mb-3">
             <label for="employeeName" class="form-label">Employee Name</label>
