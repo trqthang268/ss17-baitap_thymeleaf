@@ -17,7 +17,7 @@ public class EmployeeController {
     @Autowired
     private IEmployeeDao employeeDao;
 
-    @RequestMapping(value = {"/","/home"})
+    @RequestMapping(value = {"/", "/home"})
     public String home(Model model) {
         List<Employee> list = employeeDao.getEmployees();
         model.addAttribute("list", list);
@@ -36,8 +36,8 @@ public class EmployeeController {
         if (!result.hasErrors()) {
             employeeDao.addEmployee(e);
             return "redirect:/home";
-        }else {
-            model.addAttribute("employee",e);
+        } else {
+            model.addAttribute("employee", e);
             return "insertEmployee";
         }
     }
@@ -50,15 +50,16 @@ public class EmployeeController {
     }
 
     @PostMapping("/updateEmployee")
-    public String updateEmployee(@Validated @ModelAttribute("employee") Employee e, Model model,BindingResult result) {
-        if (result.hasErrors()){
-            model.addAttribute("employee",e);
+    public String updateEmployee(@Validated @ModelAttribute("employee") Employee e, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("employee", e);
             return "updateEmployee";
-        }else {
-        employeeDao.updateEmployee(e);
-        return "redirect:/home";
+        } else {
+            employeeDao.updateEmployee(e);
+            return "redirect:/home";
         }
     }
+
     @GetMapping("/delete/{id}")
     public String deleteEmployee(@PathVariable("id") Integer id) {
         employeeDao.deleteEmployee(id);
